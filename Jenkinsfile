@@ -1,9 +1,15 @@
 pipeline {
     agent any 
     stages {
-        stage('Stage 1') {
+        stage('Mount EFS') {
             steps {
-                echo 'Hello world!' 
+                script {
+                    sh ''' 
+                    cd /tmp
+                    mkdir ~/efs-mount-point
+                    cd 
+                    sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 172.31.12.48:/ .
+                }
             }
         }
     }
